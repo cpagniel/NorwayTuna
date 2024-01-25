@@ -20,6 +20,11 @@ for i = 0:1
 
     [binned.mz,binned.LONmid,binned.LATmid] = twodmed(PSAT.Longitude(PSAT.DayNight == i),PSAT.Latitude(PSAT.DayNight == i),...
         PSAT.Depth(PSAT.DayNight == i),binned.LONedges,binned.LATedges);
+    if i == 1
+        bins.median_depth_day = binned.mz.';
+    elseif i == 0
+        bins.median_depth_night = binned.mz.';
+    end
 
     m_pcolor(binned.LONmid,binned.LATmid,binned.mz);
 
@@ -31,42 +36,44 @@ for i = 0:1
 
     hold on
 
-    %% Plot regions.
+    %% Plot ICCAT management line.
 
-    m_line(regions.NB.bndry(1,:),regions.NB.bndry(2,:),'linewi',2,'color','k');
-    m_line(regions.CoI.bndry(1,:),regions.CoI.bndry(2,:),'linewi',2,'color','k');
-    m_line(regions.BB.bndry(1,:),regions.BB.bndry(2,:),'linewi',2,'color','k');
-    m_line(regions.WEB.bndry(1,:),regions.WEB.bndry(2,:),'linewi',2,'color','k');
-    m_line(regions.Med.bndry(1,:),regions.Med.bndry(2,:),'linewi',2,'color','k');
-    m_line(regions.NwS.bndry(1,:),regions.NwS.bndry(2,:),'linewi',2,'color','k');
-    m_line(regions.NoS.bndry(1,:),regions.NoS.bndry(2,:),'linewi',2,'color','k');
-    m_line(regions.CaI.bndry(1,:),regions.CaI.bndry(2,:),'linewi',2,'color','k');
+    m_line([-45 -45],[15 70],'linewi',2,'color','k','linestyle','--')
+
+    %% Plot hotspots.
+
+    m_plot(regions.Nordic(1,:),regions.Nordic(2,:),'k-','LineWidth',2)
+    m_plot(regions.NB(1,:),regions.NB(2,:),'k-','LineWidth',2)
+    m_plot(regions.CI(1,:),regions.CI(2,:),'k-','LineWidth',2)
+    m_plot(regions.Med(1,:),regions.Med(2,:),'k-','LineWidth',2)
+    m_plot(regions.WEB(1,:),regions.WEB(2,:),'k-','LineWidth',2)
 
     %% Create figure border.
 
-    m_grid('linewi',2,'tickdir','in','linest','none','fontsize',24);
+    m_grid('linewi',2,'tickdir','in','linest','none','fontsize',18);
 
     %% Add north arrow and scale bar.
 
     m_northarrow(-75,65,4,'type',2,'linewi',2);
-    m_ruler([.78 .98],.1,2,'fontsize',16,'ticklength',0.01);
+    m_ruler([.1 .3],.1,2,'fontsize',16,'ticklength',0.01);
 
     %% Add colorbar
 
-    p = get(gca,'Position');
-    p(1) = p(1)-0.03;
+    h = colorbar('FontSize',14,'Location','southoutside');
+    tmp = getPyPlot_cMap('gnuplot2_r',48);
+    colormap(tmp(5:end-3,:));
+    set(h,'Position',[0.6338 0.3178 0.2325 0.0244])
+    caxis([0 150]);
 
-    h = colorbar('FontSize',16); cmap = colormap('parula'); colormap(flipud(cmap));
     if i == 0
-        ylabel(h,'Median Night Depth (m)','FontSize',16);
+        ylabel(h,'Median Night Depth (m)','FontSize',16,'FontWeight','bold');
     elseif i == 1
-        ylabel(h,'Median Day Depth (m)','FontSize',16);
+        ylabel(h,'Median Day Depth (m)','FontSize',16,'FontWeight','bold');
     end
-    caxis([0 80]);
 
-    set(gca,'Position',p);
+    %% Set location of figure to match bin_map
 
-    clear p
+    set(gca,'Position',[0.1300 0.1100 0.7750 0.8150]);
 
     %% Save
 

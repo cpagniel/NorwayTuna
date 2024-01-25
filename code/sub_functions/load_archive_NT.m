@@ -13,6 +13,8 @@ files = dir('*DC.csv');
 
 for i = 1:length(files)
 
+    disp(i)
+
     if i == 1
 
         %% Load data.
@@ -57,15 +59,29 @@ for i = 1:length(files)
 
         %% Determine hotspot.
 
-%         PSAT.Region = ones(length(PSAT.Latitude),1)*9;
-%         PSAT.Region(inpolygon(PSAT.Longitude,PSAT.Latitude,regions.NwS.bndry(1,:),regions.NwS.bndry(2,:))) = 1;
-%         PSAT.Region(inpolygon(PSAT.Longitude,PSAT.Latitude,regions.NoS.bndry(1,:),regions.NoS.bndry(2,:))) = 2;
-%         PSAT.Region(inpolygon(PSAT.Longitude,PSAT.Latitude,regions.CoI.bndry(1,:),regions.CoI.bndry(2,:))) = 3;
-%         PSAT.Region(inpolygon(PSAT.Longitude,PSAT.Latitude,regions.NB.bndry(1,:),regions.NB.bndry(2,:))) = 4;
-%         PSAT.Region(inpolygon(PSAT.Longitude,PSAT.Latitude,regions.CaI.bndry(1,:),regions.CaI.bndry(2,:))) = 5;
-%         PSAT.Region(inpolygon(PSAT.Longitude,PSAT.Latitude,regions.Med.bndry(1,:),regions.Med.bndry(2,:))) = 6;
-%         PSAT.Region(inpolygon(PSAT.Longitude,PSAT.Latitude,regions.WEB.bndry(1,:),regions.WEB.bndry(2,:))) = 7;
-%         PSAT.Region(inpolygon(PSAT.Longitude,PSAT.Latitude,regions.BB.bndry(1,:),regions.BB.bndry(2,:))) = 8;
+        % 0 = Migratory Pathways
+        % 1 = Norwegian EEZ (formely Nordic Waters)
+        % 2 = Newfoundland Basin
+        % 3 = Canary Islands
+        % 4 = Mediterranean Sea
+        % 5 = West European Basin
+
+        PSAT.Region = zeros(height(PSAT.TOPPID),1);
+
+        test.Nordic = regions.Nordic(:,[12437:17000 12437]);
+        ind = find(month(PSAT.Date) >= 6 & month(PSAT.Date) <= 11 & PSAT.Latitude >= min(regions.Nordic(2,:)) & PSAT.Longitude >= min(regions.Nordic(1,:)) & PSAT.Longitude <= max(regions.Nordic(1,:)));
+        inp = inpolygon(PSAT.Longitude(ind),PSAT.Latitude(ind),test.Nordic(1,:),test.Nordic(2,:));        
+        PSAT.Region(ind(inp)) = 1;
+        % PSAT.Region(inpolygon(PSAT.Longitude,PSAT.Latitude,regions.Nordic(1,:),regions.Nordic(2,:))) = 1;
+
+        PSAT.Region(inpolygon(PSAT.Longitude,PSAT.Latitude,regions.NB(1,:),regions.NB(2,:))) = 2;
+        PSAT.Region(inpolygon(PSAT.Longitude,PSAT.Latitude,regions.CI(1,:),regions.CI(2,:))) = 3;
+        PSAT.Region(inpolygon(PSAT.Longitude,PSAT.Latitude,regions.Med(1,:),regions.Med(2,:))) = 4;
+        PSAT.Region(inpolygon(PSAT.Longitude,PSAT.Latitude,regions.WEB(1,:),regions.WEB(2,:))) = 5;
+
+        clear ind
+        clear inp
+        clear test
 
         %% Remove data after pop-up date.
 
@@ -110,15 +126,29 @@ for i = 1:length(files)
 
         %% Determine hotspot.
 
-%         tmp.Region = ones(length(tmp.Latitude),1)*9;
-%         tmp.Region(inpolygon(tmp.Longitude,tmp.Latitude,regions.NwS.bndry(1,:),regions.NwS.bndry(2,:))) = 1;
-%         tmp.Region(inpolygon(tmp.Longitude,tmp.Latitude,regions.NoS.bndry(1,:),regions.NoS.bndry(2,:))) = 2;
-%         tmp.Region(inpolygon(tmp.Longitude,tmp.Latitude,regions.CoI.bndry(1,:),regions.CoI.bndry(2,:))) = 3;
-%         tmp.Region(inpolygon(tmp.Longitude,tmp.Latitude,regions.NB.bndry(1,:),regions.NB.bndry(2,:))) = 4;
-%         tmp.Region(inpolygon(tmp.Longitude,tmp.Latitude,regions.CaI.bndry(1,:),regions.CaI.bndry(2,:))) = 5;
-%         tmp.Region(inpolygon(tmp.Longitude,tmp.Latitude,regions.Med.bndry(1,:),regions.Med.bndry(2,:))) = 6;
-%         tmp.Region(inpolygon(tmp.Longitude,tmp.Latitude,regions.WEB.bndry(1,:),regions.WEB.bndry(2,:))) = 7;
-%         tmp.Region(inpolygon(tmp.Longitude,tmp.Latitude,regions.BB.bndry(1,:),regions.BB.bndry(2,:))) = 8;
+        % 0 = Migratory Pathways
+        % 1 = Nordic Waters
+        % 2 = Newfoundland Basin
+        % 3 = Canary Islands
+        % 4 = Mediterranean Sea
+        % 5 = West European Basin
+
+        tmp.Region = zeros(height(tmp.TOPPID),1);
+
+        test.Nordic = regions.Nordic(:,[12437:17000 12437]);
+        ind = find(month(tmp.Date) >= 6 & month(tmp.Date) <= 11 & tmp.Latitude >= min(regions.Nordic(2,:)) & tmp.Longitude >= min(regions.Nordic(1,:)) & tmp.Longitude <= max(regions.Nordic(1,:)));
+        inp = inpolygon(tmp.Longitude(ind),tmp.Latitude(ind),test.Nordic(1,:),test.Nordic(2,:));        
+        tmp.Region(ind(inp)) = 1; 
+        % tmp.Region(inpolygon(tmp.Longitude,tmp.Latitude,regions.Nordic(1,:),regions.Nordic(2,:))) = 1;
+
+        tmp.Region(inpolygon(tmp.Longitude,tmp.Latitude,regions.NB(1,:),regions.NB(2,:))) = 2;
+        tmp.Region(inpolygon(tmp.Longitude,tmp.Latitude,regions.CI(1,:),regions.CI(2,:))) = 3;
+        tmp.Region(inpolygon(tmp.Longitude,tmp.Latitude,regions.Med(1,:),regions.Med(2,:))) = 4;
+        tmp.Region(inpolygon(tmp.Longitude,tmp.Latitude,regions.WEB(1,:),regions.WEB(2,:))) = 5;
+
+        clear ind
+        clear inp
+        clear test
 
         %% Remove data after pop-up date.
 

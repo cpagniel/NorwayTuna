@@ -54,12 +54,12 @@ for t = 1:length(toppID)
 
     for j = 1:length(MM)
         if isempty(tmp.lon(MM(j) == month(tmp.date)))
-            m(j) = m_plot(-100,100,'o','MarkerFaceColor',cmap.month(j,:),'MarkerEdgeColor','k','MarkerSize',7,'LineWidth',1);
+            m(j) = m_plot(-100,100,'o','MarkerFaceColor',cmap.month(j,:),'MarkerEdgeColor','k','MarkerSize',8,'LineWidth',1);
             hold on
         else
             m(j) = m_plot(tmp.lon(MM(j) == month(tmp.date)),...
                 tmp.lat(MM(j) == month(tmp.date)),...
-                'ko','MarkerFaceColor',cmap.month(j,:),'MarkerEdgeColor','k','MarkerSize',7,'LineWidth',1);
+                'ko','MarkerFaceColor',cmap.month(j,:),'MarkerEdgeColor','k','MarkerSize',8,'LineWidth',1);
             hold on
         end
     end
@@ -70,49 +70,53 @@ for t = 1:length(toppID)
 
     m_line([-45 -45],[15 70],'linewi',2,'color','k','linestyle','--')
 
-    %% Plot regions.
+    %% Plot hotspots.
 
-%     m_line(regions.NB.bndry(1,:),regions.NB.bndry(2,:),'linewi',2,'color','k');
-%     m_line(regions.CoI.bndry(1,:),regions.CoI.bndry(2,:),'linewi',2,'color','k');
-%     m_line(regions.BB.bndry(1,:),regions.BB.bndry(2,:),'linewi',2,'color','k');
-%     m_line(regions.WEB.bndry(1,:),regions.WEB.bndry(2,:),'linewi',2,'color','k');
-%     m_line(regions.Med.bndry(1,:),regions.Med.bndry(2,:),'linewi',2,'color','k');
-%     m_line(regions.NwS.bndry(1,:),regions.NwS.bndry(2,:),'linewi',2,'color','k');
-%     m_line(regions.NoS.bndry(1,:),regions.NoS.bndry(2,:),'linewi',2,'color','k');
-%     m_line(regions.CaI.bndry(1,:),regions.CaI.bndry(2,:),'linewi',2,'color','k');
+    m_plot(regions.Nordic(1,:),regions.Nordic(2,:),'k-','LineWidth',2)
+    m_plot(regions.NB(1,:),regions.NB(2,:),'k-','LineWidth',2)
+    m_plot(regions.CI(1,:),regions.CI(2,:),'k-','LineWidth',2)
+    m_plot(regions.Med(1,:),regions.Med(2,:),'k-','LineWidth',2)
+    m_plot(regions.WEB(1,:),regions.WEB(2,:),'k-','LineWidth',2)
 
     %% Plot Tagging and Pop-Up Locations
 
     m_plot(META.TaggingLongitudeE(META.TOPPID == toppID(t)),META.TaggingLatitudeN(META.TOPPID == toppID(t)),...
-        'ks','MarkerFaceColor','w','MarkerEdgeColor','k','MarkerSize',10,'LineStyle','none','LineWidth',1);
+        'ks','MarkerFaceColor','w','MarkerEdgeColor','k','MarkerSize',14,'LineStyle','none','LineWidth',1);
 
     hold on
 
     m_plot(META.PopUpLongitudeE(META.TOPPID == toppID(t)),META.PopUpLatitudeN(META.TOPPID == toppID(t)),...
-        'kv','MarkerFaceColor','w','MarkerEdgeColor','k','MarkerSize',10,'LineStyle','none','LineWidth',1);
+        'kv','MarkerFaceColor','w','MarkerEdgeColor','k','MarkerSize',12,'LineStyle','none','LineWidth',1);
 
     %% Create figure border.
 
-    m_grid('linewi',2,'tickdir','in','linest','none','fontsize',24);
+    m_grid('linewi',2,'tickdir','in','linest','none','fontsize',18);
 
     %% Add north arrow and scale bar.
 
     m_northarrow(-75,65,4,'type',2,'linewi',2);
-    m_ruler([.78 .98],.1,2,'fontsize',16,'ticklength',0.01);
+    m_ruler([.1 .3],.1,2,'fontsize',16,'ticklength',0.01);
+
+    %% Bathymetry Bar
+
+    h1 = m_contfbar([.65 .95],.27,cs,ch,'endpiece','no','FontSize',14);
+
+    xlabel(h1,'Bottom Depth (m)','FontWeight','bold');
 
     %% Add TOPP ID
 
     patch([0.6 1 1 0.6],[1.325 1.325 1.45 1.45],'w');
-    text(0.65,1.385,num2str(toppID(t)),'color','k','FontSize',20);
+    text(0.65,1.385,META.PSAT{ismember(META.TOPPID,toppID(t))},'color','k','FontSize',20);
 
     %% Save figure.
 
     cd([fdir '/figures/individual_tracks']);
-    exportgraphics(gcf,[num2str(toppID(t)) '_ICCAT.png'],'Resolution',300);
+    exportgraphics(gcf,[num2str(toppID(t)) '.png'],'Resolution',300);
 
     %% Clear
 
     clear ax* h* m MM *LIMS
+    clear cs ch
     clear ans
 
     close gcf

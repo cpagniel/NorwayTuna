@@ -5,7 +5,9 @@
 
 toppID = unique(PSAT.TOPPID);
 
-for i = 1:length(toppID)
+cmap.regions = [128 128 128; 227 26 28; 56 108 176; 166 206 227; 253 192 134; 190 174 212]./256;
+
+for i = 3 %1:length(toppID)
 
     %% Create figure.
 
@@ -13,19 +15,20 @@ for i = 1:length(toppID)
 
     %% Plot timeseries.
 
-    scatter(PSAT.DateTime(PSAT.TOPPID == toppID(i)),PSAT.Depth(PSAT.TOPPID == toppID(i)),...
-        4,PSAT.Temperature(PSAT.TOPPID == toppID(i)),'filled');
+    scatter(PSAT.DateTime(PSAT.TOPPID == toppID(i) & PSAT.Date <= META.PopUpDate(META.TOPPID == toppID(i))),PSAT.Depth(PSAT.TOPPID == toppID(i) & PSAT.Date <= META.PopUpDate(META.TOPPID == toppID(i))),...
+        4,PSAT.Temperature(PSAT.TOPPID == toppID(i) & PSAT.Date <= META.PopUpDate(META.TOPPID == toppID(i))),'filled');
 
-    set(gca,'ydir','reverse','FontSize',22,'LineWidth',4);
-    xlabel('Date','FontSize',26); ylabel('Depth (m)','FontSize',26);
+    set(gca,'ydir','reverse','FontSize',24,'LineWidth',3);
+    xlabel('Date','FontSize',30); ylabel('Depth (m)','FontSize',30);
 
     %% Set colormap for timeseries.
 
     % cmocean thermal;
-    % colormap(getPyPlot_cMap('Spectral_r'));
-    colormap(jet)
-    h = colorbar; ylabel(h,'Temperature (^oC)','FontSize',26);
-    caxis([0 28]); h.Ticks = 0:4:28; 
+    colormap(getPyPlot_cMap('Spectral_r'));
+    % colormap(jet)
+    h = colorbar; ylabel(h,'Temperature (^oC)','FontSize',28);
+    h.FontSize = 26;
+    caxis([0 30]); h.Ticks = 0:5:30; 
 
     clear h
 
@@ -36,10 +39,11 @@ for i = 1:length(toppID)
         xlim([datetime(2020,08,30) datetime(2021,10,15)]);
     elseif year(tmp(1)) == 2021
         xlim([datetime(2021,08,30) datetime(2022,10,15)]);
+    elseif year(tmp(1)) == 2022
+        xlim([datetime(2022,08,30) datetime(2023,10,15)]);
     end
 
-    % ylim([-50 1200]);
-    ylim([0 1200]);e
+    ylim([-50 1200]);
 
     box on;
 
@@ -47,24 +51,24 @@ for i = 1:length(toppID)
 
      %% Plot hotspot.
  
-%     tmp = PSAT(PSAT.TOPPID == toppID(i),:);
-% 
-%     ind = ischange(tmp.Region(tmp.TOPPID == toppID(i))); 
-%     ind = [1; find(ind); length(tmp.Region(tmp.TOPPID == toppID(i)))];
-% 
-%     for j = 1:length(ind)-1
-%         patch([tmp.DateTime(ind(j)) tmp.DateTime(ind(j)) ...
-%             tmp.DateTime(ind(j+1)-1) tmp.DateTime(ind(j+1)-1) tmp.DateTime(ind(j))],...
-%             [-10 -50 -50 -10 -10],cmap.regions(tmp.Region(ind(j)),:),'EdgeColor','none');
-%     end
-%     clear j 
-%     clear ind
-%     clear tmp
+    tmp = PSAT(PSAT.TOPPID == toppID(i) & PSAT.Date <= META.PopUpDate(META.TOPPID == toppID(i)),:);
+
+    ind = ischange(tmp.Region(tmp.TOPPID == toppID(i))); 
+    ind = [1; find(ind); length(tmp.Region(tmp.TOPPID == toppID(i)))];
+
+    for j = 1:length(ind)-1
+        p(j) = patch([tmp.DateTime(ind(j)) tmp.DateTime(ind(j)) ...
+            tmp.DateTime(ind(j+1)-1) tmp.DateTime(ind(j+1)-1) tmp.DateTime(ind(j))],...
+            [-10 -50 -50 -10 -10],cmap.regions(tmp.Region(ind(j))+1,:),'EdgeColor','none');
+    end
+    clear j 
+    clear ind
+    clear tmp
 
     %% Save figure.
 
     cd([fdir '/figures/timeseries']);
-    exportgraphics(gcf,['timeseries_' num2str(toppID(i)) '_ICCAT.png'],'Resolution',300);
+    exportgraphics(gcf,['timeseries_' num2str(toppID(i)) '.png'],'Resolution',300);
 
     close gcf
 

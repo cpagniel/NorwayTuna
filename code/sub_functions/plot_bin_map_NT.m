@@ -16,8 +16,6 @@ m_proj('miller','lon',LONLIMS,'lat',LATLIMS);
 binned.LONedges = -80:1:40;
 binned.LATedges = 15:1:70;
 
-% [binned.N,binned.LONmid,binned.LATmid] = twodhist(SSM.Longitude,SSM.Latitude,binned.LONedges,binned.LATedges);
-
 [binned.N,~,~,binned.indLON,binned.indLAT] = histcounts2(SSM.Longitude,SSM.Latitude,binned.LONedges,binned.LATedges); % number of daily geolocations
 SSM.Index = sub2ind(size(binned.N),binned.indLON,binned.indLAT);
 
@@ -31,7 +29,7 @@ binned.Nn = (binned.n./length(unique(SSM.TOPPID))).*binned.N; % number of daily 
 binned.LONmid = diff(binned.LONedges)/2 + -80:1:40;
 binned.LATmid = diff(binned.LATedges)/2 + 15:1:70;
 
-m_pcolor(binned.LONmid,binned.LATmid,binned.Nn.');
+m_pcolor(binned.LONmid-0.25,binned.LATmid-0.25,binned.Nn.');
 
 hold on
 
@@ -41,38 +39,40 @@ m_gshhs_i('patch',[.7 .7 .7]);
 
 hold on
 
-%% Plot regions.
+%% Plot ICCAT regions.
 
-m_line(regions.NB.bndry(1,:),regions.NB.bndry(2,:),'linewi',2,'color','k');
-m_line(regions.CoI.bndry(1,:),regions.CoI.bndry(2,:),'linewi',2,'color','k');
-m_line(regions.BB.bndry(1,:),regions.BB.bndry(2,:),'linewi',2,'color','k');
-m_line(regions.WEB.bndry(1,:),regions.WEB.bndry(2,:),'linewi',2,'color','k');
-m_line(regions.Med.bndry(1,:),regions.Med.bndry(2,:),'linewi',2,'color','k');
-m_line(regions.NwS.bndry(1,:),regions.NwS.bndry(2,:),'linewi',2,'color','k');
-m_line(regions.NoS.bndry(1,:),regions.NoS.bndry(2,:),'linewi',2,'color','k');
-m_line(regions.CaI.bndry(1,:),regions.CaI.bndry(2,:),'linewi',2,'color','k');
+m_line([-45 -45],[15 70],'linewi',2,'color','k','linestyle','--')
+
+%% Plot hotspots.
+
+m_plot(regions.Nordic(1,:),regions.Nordic(2,:),'k-','LineWidth',2)
+m_plot(regions.NB(1,:),regions.NB(2,:),'k-','LineWidth',2)
+m_plot(regions.CI(1,:),regions.CI(2,:),'k-','LineWidth',2)
+m_plot(regions.Med(1,:),regions.Med(2,:),'k-','LineWidth',2)
+m_plot(regions.WEB(1,:),regions.WEB(2,:),'k-','LineWidth',2)
 
 %% Create figure border.
 
-m_grid('linewi',2,'tickdir','in','linest','none','fontsize',24);
+m_grid('linewi',2,'tickdir','in','linest','none','fontsize',18);
 
 %% Add north arrow and scale bar.
 
 m_northarrow(-75,65,4,'type',2,'linewi',2);
-m_ruler([.78 .98],.1,2,'fontsize',16,'ticklength',0.01);
+m_ruler([.1 .3],.1,2,'fontsize',16,'ticklength',0.01);
 
 %% Add colorbar
 
 p = get(gca,'Position');
 
 h = colorbar('FontSize',16); 
-colormap(flipud(hot(20)));
-ylabel(h,'Total Daily Geolocations x Propotion of Total Tags','FontSize',16);
-caxis([0 20]);
+colormap(flipud(hot(40)));
+ylab = ylabel(h,'Total Daily Geolocations x Propotion of Total Tags','FontSize',16);
+caxis([0 40]);
 
 set(gca,'Position',p);
+ylab.Position(1) = ylab.Position(1) - 0.13;
 
-clear cmap
+clear ylab
 clear p
 
 %% Save

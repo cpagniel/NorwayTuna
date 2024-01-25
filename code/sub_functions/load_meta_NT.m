@@ -7,7 +7,7 @@ cd([fdir '/data/meta']);
 
 %% Load MetaData
 
-META = readtable("Table1.xlsx");
-META.Properties.VariableNames = {'TOPPID' 'PSAT' 'TagginDate' 'CatchTime',...
+META = readtable("Table_1.xlsx");
+META.Properties.VariableNames = {'TOPPID' 'PSAT' 'TagginDate' ,...
     'ReleaseTime' 'TaggingLatitudeN' 'TaggingLongitudeE' 'CFL_cm' 'PopUpDate',...
-    'PopUpLatitudeN' 'PopUpLongitudeE' 'Status' 'Reason'};
+    'PopUpLatitudeN' 'PopUpLongitudeE' 'DeploymentDuration' 'Status' 'Reason'};
