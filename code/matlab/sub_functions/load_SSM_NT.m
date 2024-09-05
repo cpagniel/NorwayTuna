@@ -102,3 +102,11 @@ season(month(SSM.Date) == 6 | month(SSM.Date) == 7 | month(SSM.Date) == 8) = 4;
 SSM.Season = season;
 
 clear season
+
+%% Determine day length.
+
+[SRISE,SSET] = sunrise(SSM.Latitude,SSM.Longitude,0,0,SSM.Date);
+SSM.DayLength = hours(datetime(SSET,'ConvertFrom','datenum') - datetime(SRISE,'ConvertFrom','datenum'));
+
+clear SRISE
+clear SSET

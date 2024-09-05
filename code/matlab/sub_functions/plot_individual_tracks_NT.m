@@ -8,6 +8,8 @@ toppID = unique(SSM.TOPPID);
 
 %% Loop Through All TOPP IDs
 
+CI = cell(length(toppID),1);
+
 for t = 1:length(toppID)
 
     %% Create figure and axes for bathymetry.
@@ -26,9 +28,24 @@ for t = 1:length(toppID)
 
     hold on
 
+    %% Load confidence intervals.
+
+    cd('/Users/cpagniello/Library/CloudStorage/GoogleDrive-cpagniel@stanford.edu/.shortcut-targets-by-id/1IB_xjgI9jsc5TBK4_2kBD3s2DxfWXYCS/ABFT_Norway/SSM_rawoutput/')
+
+    tmp = readmatrix([num2str(toppID(t)) '00_99CI_full.xlsx']);
+
+    %% Plot confidence intervals.
+
+    m_plot(tmp(:,1),tmp(:,2),'k:','LineWidth',2)
+
+    CI{t} = tmp;
+
+    clear tmp
+
     %% Plot land.
 
-    m_gshhs_i('patch',[.7 .7 .7]);
+    m_coast('patch',[.7 .7 .7]);
+    % m_gshhs_i('patch',[.7 .7 .7]);
 
     hold on
 

@@ -35,7 +35,8 @@ hold on
 
 %% Plot land.
 
-m_gshhs_i('patch',[.7 .7 .7]);
+m_coast('patch',[.7 .7 .7]);
+% m_gshhs_i('patch',[.7 .7 .7]);
 
 hold on
 
@@ -65,7 +66,9 @@ m_ruler([.1 .3],.1,2,'fontsize',16,'ticklength',0.01);
 p = get(gca,'Position');
 
 h = colorbar('FontSize',16); 
-colormap(flipud(hot(40)));
+cmap.bin = flipud(hot(45));
+cmap.bin = [1,1,1; cmap.bin(6:end,:)];
+colormap(cmap.bin);
 ylab = ylabel(h,'Total Daily Geolocations x Propotion of Total Tags','FontSize',16);
 caxis([0 40]);
 

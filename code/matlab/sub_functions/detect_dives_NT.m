@@ -6,15 +6,20 @@
 
 toppID = unique(PSAT.TOPPID);
 
-%% Apply median filter with 25-minute window to smooth data.
+%% Apply median filter with 1 minute and 15 second window to smooth data.
 
 for i = 1:length(toppID)
-    PSAT.DepthSmooth(PSAT.TOPPID == toppID(i)) = smoothdata(PSAT.Depth(PSAT.TOPPID == toppID(i)),'movmedian',15); % median filter with window length of 25 minutes
+    PSAT.DepthSmooth(PSAT.TOPPID == toppID(i)) = smoothdata(PSAT.Depth(PSAT.TOPPID == toppID(i)),'movmedian',15); 
 end
 
 %% Calculate depth threshold.
 
+disp('Depth Threshold')
+
 for i = 1:length(toppID)
+
+    disp(i)
+
     tmp.smoothdepth = PSAT.DepthSmooth(PSAT.TOPPID == toppID(i));
     tmp.time = PSAT.DateTime(PSAT.TOPPID == toppID(i));
 
@@ -40,6 +45,8 @@ clear *dt
 % Compute max, min, mean and median depth (m). Compute dive duration
 % (hours) and inter-dive-interval (hours). Compute maximum descent and
 % ascent rate (m/s).
+
+disp('Generate indices')
 
 for i = 1:length(toppID)
 

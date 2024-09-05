@@ -7,7 +7,7 @@ toppID = unique(PSAT.TOPPID);
 
 cmap.regions = [128 128 128; 227 26 28; 56 108 176; 166 206 227; 253 192 134; 190 174 212]./256;
 
-for i = 3 %1:length(toppID)
+for i = 1:length(toppID)
 
     %% Create figure.
 

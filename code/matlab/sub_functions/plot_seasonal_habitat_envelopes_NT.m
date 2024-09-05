@@ -37,8 +37,8 @@ for i = 1:length(fieldnames(regions))+1
 
         shading flat
 
-        set(gca,'ydir','reverse','FontSize',22,'linewidth',2);
-        xlabel('Temperature (^oC)','FontSize',26); ylabel('Depth (m)','FontSize',26);
+        set(gca,'ydir','reverse','FontSize',18,'linewidth',2);
+        xlabel('Temperature (^oC)','FontSize',20); ylabel('Depth (m)','FontSize',20);
 
         xlim([binned.Temp(1) binned.Temp(end)]);
         ylim([binned.Depth(1) binned.Depth(end)]);

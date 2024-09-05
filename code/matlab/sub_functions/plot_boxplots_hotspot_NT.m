@@ -31,7 +31,7 @@ for i = [1:5 0]
         xlabel('Hotspot','FontSize',24,'FontWeight','Bold');
         ylab = ylabel('Speed (m/s)','FontSize',24,'FontWeight','Bold');
         xlim([0 7]); xticks(1:1:6);
-        ylim([0 2.5]);
+        ylim([0 3]);
         set(gca,'XTickLabel',{'NOR','NB','CI','Med','WEB','Migratory'});
     end
 end
@@ -111,7 +111,7 @@ for i = [1:5 0]
         box on
         set(gca,'FontSize',18,'LineWidth',1);
         xlabel('Hotspot','FontSize',24,'FontWeight','Bold');
-        ylab = ylabel('Duration (hours)','FontSize',24,'FontWeight','Bold');
+        ylab = ylabel('Dive Duration (hours)','FontSize',24,'FontWeight','Bold');
         xlim([0 7]); xticks(1:1:6);
         ylim([0 2]);
         set(gca,'XTickLabel',{'NOR','NB','CI','Med','WEB','Migratory'});

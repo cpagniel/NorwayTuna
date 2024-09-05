@@ -1,5 +1,5 @@
-%% plot_daily_max_depth_map_NT.m
-% Sub-function of Norway_Tuna.m; plots median daily maximum dive depth in 
+%% plot_time_in_mesopelagic_map_NT.m
+% Sub-function of Norway_Tuna.m; plots median time in mesopelagic in 
 % 1 x 1 degree bins.
 
 %% Create figure and axes for bathymetry. 
@@ -11,14 +11,14 @@ figure('Position',[476 334 716 532]);
 LATLIMS = [15 70]; LONLIMS = [-80 40];
 m_proj('miller','lon',LONLIMS,'lat',LATLIMS);
 
-%% Compute median of daily maximum dive depth in each bin.
+%% Compute median of time in mesopelagic in each bin.
 
 binned.LONedges = -80:1:40;
 binned.LATedges = 15:1:70;
 
 [binned.mz,binned.LONmid,binned.LATmid] = twodmed(SSM.Longitude,SSM.Latitude,...
-        SSM.max_Depth,binned.LONedges,binned.LATedges);
-bins.daily_max_d = binned.mz.';
+        SSM.TimeinMeso,binned.LONedges,binned.LATedges);
+bins.time_in_meso = binned.mz.';
 
 m_pcolor(binned.LONmid-0.25,binned.LATmid-0.25,binned.mz);
 
@@ -26,7 +26,8 @@ hold on
 
 %% Plot land.
 
-m_gshhs_i('patch',[.7 .7 .7]);
+m_coast('patch',[.7 .7 .7]);
+% m_gshhs_i('patch',[.7 .7 .7]);
 
 hold on
 
@@ -54,11 +55,12 @@ m_ruler([.1 .3],.1,2,'fontsize',16,'ticklength',0.01);
 %% Add colorbar
 
 h = colorbar('FontSize',14,'Location','southoutside'); 
-tmp = getPyPlot_cMap('gnuplot2_r',48);
-colormap(tmp(5:end-3,:));
+tmp = getPyPlot_cMap('gnuplot2_r',21);
+colormap(tmp(2:end,:));
 set(h,'Position',[0.6338 0.3178 0.2325 0.0244])
-ylabel(h,'Daily Max Depth (m)','FontSize',16,'FontWeight','bold');
-caxis([0 600]);
+ylabel(h,'% Time in Mesopelagic','FontSize',16,'FontWeight','bold');
+caxis([0 20]);
+h.Ticks = 0:5:20;
 
 %% Set location of figure to match bin_map
 
@@ -67,7 +69,7 @@ set(gca,'Position',[0.1300 0.1100 0.7750 0.8150]);
 %% Save
 
 cd([fdir '/figures']);
-exportgraphics(gcf,'daily_max_depth_map.png','Resolution',300)
+exportgraphics(gcf,'time_in_mesopelagic_map.png','Resolution',300)
 
 %% Clear
 

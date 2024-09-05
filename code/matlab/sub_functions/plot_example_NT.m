@@ -6,6 +6,8 @@
 
 t = 5121087;
 
+cmap.regions = [128 128 128; 227 26 28; 56 108 176; 166 206 227; 253 192 134; 190 174 212]./256;
+
 %% Plot track.
 
 % Create figure and axes for bathymetry.
@@ -21,8 +23,19 @@ colormap(m_colmap('blue'));
 
 hold on
 
+% Load confidence intervals.
+cd('/Users/cpagniello/Library/CloudStorage/GoogleDrive-cpagniel@stanford.edu/.shortcut-targets-by-id/1IB_xjgI9jsc5TBK4_2kBD3s2DxfWXYCS/ABFT_Norway/SSM_rawoutput/')
+tmp = readmatrix([num2str(t) '00_CI.xlsx']);
+
+% Plot confidence intervals
+m_plot(tmp(:,1),tmp(:,2),'k:','LineWidth',2);
+clear tmp
+
+hold on
+
 % Plot land.
-m_gshhs_i('patch',[.7 .7 .7]);
+m_coast('patch',[.7 .7 .7]);
+% m_gshhs_i('patch',[.7 .7 .7]);
 
 hold on
 
@@ -230,7 +243,7 @@ plot(PSAT.DateTime(PSAT.TOPPID == t & PSAT.Date <= META.PopUpDate(META.TOPPID ==
 xlim([datetime(2021,10,04) datetime(2021,10,05)]); ylim([0 60]);
 yticks(0:5:30); yticklabels(0:5:30);
 
-set(gca,'LineWidth',2,'YColor','r'); 
+set(gca,'LineWidth',2,'YColor','r');
 
 y = ylabel('Temperature (^oC)','FontSize',24);
 pos = get(gca,'Position');
@@ -280,7 +293,7 @@ plot(PSAT.DateTime(PSAT.TOPPID == t & PSAT.Date <= META.PopUpDate(META.TOPPID ==
 xlim([datetime(2021,12,15) datetime(2021,12,16)]); ylim([0 60]);
 yticks(0:5:30); yticklabels(0:5:30);
 
-set(gca,'LineWidth',2,'YColor','r'); 
+set(gca,'LineWidth',2,'YColor','r');
 
 y = ylabel('Temperature (^oC)','FontSize',24);
 pos = get(gca,'Position');
@@ -330,7 +343,7 @@ plot(PSAT.DateTime(PSAT.TOPPID == t & PSAT.Date <= META.PopUpDate(META.TOPPID ==
 xlim([datetime(2022,02,14) datetime(2022,02,15)]); ylim([0 60]);
 yticks(0:5:30); yticklabels(0:5:30);
 
-set(gca,'LineWidth',2,'YColor','r'); 
+set(gca,'LineWidth',2,'YColor','r');
 
 y = ylabel('Temperature (^oC)','FontSize',24);
 pos = get(gca,'Position');
@@ -380,7 +393,7 @@ plot(PSAT.DateTime(PSAT.TOPPID == t & PSAT.Date <= META.PopUpDate(META.TOPPID ==
 xlim([datetime(2022,04,21) datetime(2022,04,22)]); ylim([0 60]);
 yticks(0:5:30); yticklabels(0:5:30);
 
-set(gca,'LineWidth',2,'YColor','r'); 
+set(gca,'LineWidth',2,'YColor','r');
 
 y = ylabel('Temperature (^oC)','FontSize',24);
 pos = get(gca,'Position');
@@ -430,7 +443,7 @@ plot(PSAT.DateTime(PSAT.TOPPID == t & PSAT.Date <= META.PopUpDate(META.TOPPID ==
 xlim([datetime(2022,06,06) datetime(2022,06,07)]); ylim([0 60]);
 yticks(0:5:30); yticklabels(0:5:30);
 
-set(gca,'LineWidth',2,'YColor','r'); 
+set(gca,'LineWidth',2,'YColor','r');
 
 y = ylabel('Temperature (^oC)','FontSize',24);
 pos = get(gca,'Position');

@@ -99,7 +99,7 @@ for i = 1:4
         box on
         set(gca,'FontSize',18,'LineWidth',1);
         xlabel('Season','FontSize',24,'FontWeight','Bold');
-        ylab = ylabel('Duration (hours)','FontSize',24,'FontWeight','Bold');
+        ylab = ylabel('Dive Duration (hours)','FontSize',24,'FontWeight','Bold');
         xlim([0 5]); xticks(1:1:4);
         ylim([0 2]);
         set(gca,'XTickLabel',{'Fall','Winter','Spring','Summer'});
@@ -175,7 +175,7 @@ for i = 1:4
         xlabel('Season','FontSize',24,'FontWeight','Bold');
         ylab = ylabel('Median Day Depth (m)','FontSize',24,'FontWeight','Bold');
         xlim([0 5]); xticks(1:1:4);
-        ylim([0 180]);
+        ylim([0 200]);
         set(gca,'XTickLabel',{'Fall','Winter','Spring','Summer'});
     end
 end

@@ -32,7 +32,8 @@ for i = 0:1
 
     %% Plot land.
 
-    m_gshhs_i('patch',[.7 .7 .7]);
+    m_coast('patch',[.7 .7 .7]);
+    % m_gshhs_i('patch',[.7 .7 .7]);
 
     hold on
 

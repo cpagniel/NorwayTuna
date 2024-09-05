@@ -1,5 +1,5 @@
-%% plot_time_in_mesopelagic_map_NT.m
-% Sub-function of Norway_Tuna.m; plots median time in mesopelagic in 
+%% plot_dive_duration_map_NT.m
+% Sub-function of Norway_Tuna.m; plots median dive duration in 
 % 1 x 1 degree bins.
 
 %% Create figure and axes for bathymetry. 
@@ -11,14 +11,14 @@ figure('Position',[476 334 716 532]);
 LATLIMS = [15 70]; LONLIMS = [-80 40];
 m_proj('miller','lon',LONLIMS,'lat',LATLIMS);
 
-%% Compute median of time in mesopelagic in each bin.
+%% Compute median of daily dive frequency in each bin.
 
 binned.LONedges = -80:1:40;
 binned.LATedges = 15:1:70;
 
-[binned.mz,binned.LONmid,binned.LATmid] = twodmed(SSM.Longitude,SSM.Latitude,...
-        SSM.TimeinMeso,binned.LONedges,binned.LATedges);
-bins.time_in_meso = binned.mz.';
+[binned.mz,binned.LONmid,binned.LATmid] = twodmed(B.dives.lon,B.dives.lat,...
+        B.dives.duration,binned.LONedges,binned.LATedges);
+bins.duration = binned.mz.';
 
 m_pcolor(binned.LONmid-0.25,binned.LATmid-0.25,binned.mz);
 
@@ -26,7 +26,8 @@ hold on
 
 %% Plot land.
 
-m_gshhs_i('patch',[.7 .7 .7]);
+m_coast('patch',[.7 .7 .7]);
+% m_gshhs_i('patch',[.7 .7 .7]);
 
 hold on
 
@@ -53,13 +54,11 @@ m_ruler([.1 .3],.1,2,'fontsize',16,'ticklength',0.01);
 
 %% Add colorbar
 
-h = colorbar('FontSize',14,'Location','southoutside'); 
-tmp = getPyPlot_cMap('gnuplot2_r',21);
-colormap(tmp(2:end,:));
+h = colorbar('FontSize',14,'Location','southoutside'); colormap(getPyPlot_cMap('YlGnBu',8)); 
 set(h,'Position',[0.6338 0.3178 0.2325 0.0244])
-ylabel(h,'% Time in Mesopelagic','FontSize',16,'FontWeight','bold');
-caxis([0 20]);
-h.Ticks = 0:5:20;
+ylabel(h,'Dive Duration (hours)','FontSize',16,'FontWeight','bold');
+caxis([0 2]);
+h.Ticks = 0:0.5:2;
 
 %% Set location of figure to match bin_map
 
@@ -68,12 +67,12 @@ set(gca,'Position',[0.1300 0.1100 0.7750 0.8150]);
 %% Save
 
 cd([fdir '/figures']);
-exportgraphics(gcf,'time_in_mesopelagic_map.png','Resolution',300)
+exportgraphics(gcf,'dive_duration_map.png','Resolution',300)
 
 %% Clear
 
-clear h* binned *LIMS
-clear tmp
+clear h* *LIMS
+clear binned
 clear ans
 
 close gcf

@@ -71,9 +71,6 @@ run plot_median_daynight_depth_map_NT
 run plot_daily_max_depth_map_NT
 run plot_time_in_mesopelagic_map_NT
 
-% Figure 5
-run plot_boxplots_hotspot_NT
-
 %% Main Tables
 
 % Table 1
@@ -82,23 +79,35 @@ run calc_corr_coeff_NT
 %% Supplementary Figures and Tables
 
 % Figure S1
+run plot_frequency_distributions_NT
+
+% Figure S2
 run plot_seasonal_map_NT
 
-% Panels for Figures S2 to S6
+% Panels for Figures S3 to S7
 run plot_individual_tracks_NT
 run plot_timeseries_NT
 
-% Figure S7
+% Figure S8
 run plot_TaD_NT.m 
 
-% Figure S8
-run plot_boxplots_season_NT.m
-
 % Figure S9
-run plot_corr_MLD_NT
+run plot_TaT_NT.m
 
 % Figure S10
+run plot_boxplots_hotspot_NT
+
+% Figure S11
+run plot_boxplots_season_NT.m
+
+% Figure S12
+run plot_corr_MLD_NT
+
+% Figure S13
 run plot_corr_T_at_MLD_NT
 
-% Table S2
+% Figure S14
+run plot_daylength_hotspot_NT.m
+
+% Table S1
 run calc_hotspot_residency_NT 
